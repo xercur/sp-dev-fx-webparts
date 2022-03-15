@@ -74,6 +74,7 @@ export default class CalendarFeedSummary extends React.Component<ICalendarFeedSu
       prevProvider.EventRange.DateRange !== currProvider.EventRange.DateRange ||
       prevProvider.UseCORS !== currProvider.UseCORS ||
       prevProvider.MaxTotal !== currProvider.MaxTotal ||
+      prevProvider.SetAttendee !== currProvider.SetAttendee ||
       prevProvider.ConvertFromUTC !== currProvider.ConvertFromUTC;
 
     if (settingsHaveChanged) {

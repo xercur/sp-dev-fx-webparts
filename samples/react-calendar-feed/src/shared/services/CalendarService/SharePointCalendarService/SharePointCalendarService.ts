@@ -1,7 +1,7 @@
 /**
  * ExtensionService
  */
-import { HttpClientResponse } from "@microsoft/sp-http";
+ import { HttpClientResponse } from "@microsoft/sp-http";
 import { ICalendarService } from "..";
 import { BaseCalendarService } from "../BaseCalendarService";
 import { ICalendarEvent } from "../ICalendarEvent";
@@ -18,7 +18,7 @@ export class SharePointCalendarService extends BaseCalendarService
   public getEvents = async (): Promise<ICalendarEvent[]> => {
     const parameterizedFeedUrl: string = this.replaceTokens(
       this.FeedUrl,
-      this.EventRange
+      this.EventRange,
     );
 
     // Get the URL
@@ -29,30 +29,50 @@ export class SharePointCalendarService extends BaseCalendarService
 
     // Get the web root
     let webRoot = urlParts[0] + "/" + urlParts[1] + "/" + urlParts[2];
-
+    
     // Get the list URL
     let listUrl = webUrl.substring(webRoot.length);
-
+    
     // Find the "lists" portion of the URL to get the site URL
     let webLocation = listUrl.substr(0, listUrl.indexOf("lists/"));
     let siteUrl = webRoot + webLocation;
-
+    
+    
     // Open the web associated to the site
     let web = new Web(siteUrl);
 
     // Get the web
     await web.get();
+
+
+    
+
+    let currentuserid = await web.currentUser.get().then((user)=>{
+      return user.Id;
+    });
+    let listguid = await web.getList(listUrl).get().then((list)=>{
+      return list.Id;
+    });
+
+    
+
+   
+
+    let equal:string =this.SetAttendee? "eq ": "ne ";
     // Build a filter so that we don't retrieve every single thing unless necesssary
     let dateFilter: string = "EventDate ge datetime'" + this.EventRange.Start.toISOString() + "' and EndDate lt datetime'" + this.EventRange.End.toISOString() + "'";
+    let personFilter: string =" and ParticipantsPickerId " + equal +""+ currentuserid;
     try {
       const items = await web.getList(listUrl)
-        .items.select("Id,Title,Description,EventDate,EndDate,fAllDayEvent,Category,Location")
+        .items.select("Id,Title,Description,EventDate,EndDate,fAllDayEvent,Category,Location,ParticipantsPickerId,BannerUrl")
         .orderBy('EventDate', true)
-        .filter(dateFilter)
+        .filter(dateFilter + personFilter)
         .get();
-      // Once we get the list, convert to calendar events
+
+        // Once we get the list, convert to calendar events
       let events: ICalendarEvent[] = items.map((item: any) => {
-        let eventUrl: string = combine(webUrl, "DispForm.aspx?ID=" + item.Id);
+        let eventUrl: string = combine(siteUrl, `_layouts/15/Event.aspx?ListGuid=${listguid}&ItemId=${item.Id}`);
+        let PictureUrl = item.BannerUrl ? item.BannerUrl.Url: null;
         const eventItem: ICalendarEvent = {
           title: item.Title,
           start: item.EventDate,
@@ -61,7 +81,10 @@ export class SharePointCalendarService extends BaseCalendarService
           allDay: item.fAllDayEvent,
           category: item.Category,
           description: item.Description,
-          location: item.Location
+          location: item.Location,
+          banner: PictureUrl,
+          attendees: item.ParticipantsPickerId,
+          guid: listguid
         };
         return eventItem;
       });

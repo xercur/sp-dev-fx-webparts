@@ -26,9 +26,10 @@
         "dateRange": 4,
         "maxEvents": 4,
         "useCORS": false,
-        "cacheDuration": 15,
+        "cacheDuration": 0,
         "maxTotal": 10,
-        "convertFromUTC": false
+        "convertFromUTC": false,
+        "setAttendee":false
       }
   }]
 }

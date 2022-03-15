@@ -22,11 +22,12 @@ export const EventCard = (props: IEventCardProps) => {
     title,
     url,
     category,
-    location
+    location,
+    banner
   } = event;
 
   const eventDate: moment.Moment = moment(start);
-  const dateString: string = allDay ? eventDate.format(strings.AllDayDateFormat) : eventDate.format(strings.LocalizedTimeFormat);
+  const dateString: string = allDay ? eventDate.format(strings.AllDayDateFormat) : eventDate.locale('de').format(strings.LocalizedTimeFormat);
 
   /**
    * Handle adding to calendar
@@ -87,6 +88,7 @@ export const EventCard = (props: IEventCardProps) => {
   const textColor: string = themeVariant && backgroundColor != themeVariant.semanticColors.bodyText ?
     themeVariant.semanticColors.bodyText : themeVariant.palette["primaryText"];
   const subTextColor: string = themeVariant && themeVariant.semanticColors.bodySubtext && backgroundColor != themeVariant.semanticColors.bodySubtext ? themeVariant.semanticColors.bodySubtext : textColor;
+  const background: string = banner ? 'linear-gradient(360deg, rgba(51, 51, 51, 0.9), rgba(51, 51, 51, 0) 97.92%), url("'+banner+'")' : "";
 
   if (isNarrow) {
     // Calculate the date and string format
@@ -115,6 +117,7 @@ export const EventCard = (props: IEventCardProps) => {
                 endDate={end}
                 size={DateBoxSize.Small}
                 themeVariant={themeVariant}
+                banner={banner}
               />
             </div>
             <div>
@@ -144,13 +147,14 @@ export const EventCard = (props: IEventCardProps) => {
             style={themeVariant && { borderColor: themeVariant.semanticColors.bodyDivider }}
           >
             <FocusZone>
-              <div className={styles.dateBoxContainer} style={{ height: 160 }}>
+              <div className={styles.dateBoxContainer} style={{ height: 160, backgroundImage: background, backgroundSize:'cover' }}>
                 <DateBox
                   className={styles.dateBox}
                   startDate={start}
                   endDate={end}
                   size={DateBoxSize.Medium}
                   themeVariant={themeVariant}
+                  banner={banner}
                 />
               </div>
               <div className={styles.detailsContainer}>

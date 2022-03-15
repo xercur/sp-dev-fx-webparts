@@ -70,18 +70,19 @@ export default class CalendarFeedSummaryWebPart extends BaseClientSideWebPart<IC
         cacheDuration,
         dateRange,
         maxTotal,
+        setAttendee: setAttendee,
         convertFromUTC: convertFromUTC
       } = this.properties;
 
       // make sure to set a default date range if it isn't defined
       // somehow this is an issue when binding to properties that are enums
       if (dateRange === undefined) {
-        dateRange = DateRange.Year;
+        dateRange = DateRange.OneWeek;
       }
 
       if (cacheDuration === undefined) {
         // default to 15 minutes
-        cacheDuration = 15;
+        cacheDuration = 0;
       }
 
       if (maxTotal === undefined) {
@@ -92,7 +93,12 @@ export default class CalendarFeedSummaryWebPart extends BaseClientSideWebPart<IC
         convertFromUTC = false;
       }
 
+      if(setAttendee === undefined){
+        setAttendee = false;
+      }
+
       resolve(undefined);
+
     });
   }
 
@@ -151,6 +157,7 @@ export default class CalendarFeedSummaryWebPart extends BaseClientSideWebPart<IC
       cacheDuration,
       feedType,
       maxTotal,
+      setAttendee,
       convertFromUTC
     } = this.properties;
 
@@ -189,6 +196,11 @@ export default class CalendarFeedSummaryWebPart extends BaseClientSideWebPart<IC
                 PropertyPaneDropdown("dateRange", {
                   label: strings.DateRangeFieldLabel,
                   options: [
+                    { key: DateRange.MinusYear, text:"Last Year"},
+                    { key: DateRange.MinusQuarter, text:"Last Quarter"},
+                    { key: DateRange.MinusMonth, text:"Last Month"},
+                    { key: DateRange.MinusTwoWeek, text:"Last two weeks"},
+                    { key: DateRange.MinusOneWeek, text:"Last week"},
                     { key: DateRange.OneWeek, text: strings.DateRangeOptionWeek },
                     { key: DateRange.TwoWeeks, text: strings.DateRangeOptionTwoWeeks },
                     { key: DateRange.Month, text: strings.DateRangeOptionMonth },
@@ -196,6 +208,13 @@ export default class CalendarFeedSummaryWebPart extends BaseClientSideWebPart<IC
                     { key: DateRange.Year, text: strings.DateRangeOptionUpcoming },
                   ]
                 }),
+                PropertyPaneToggle("setAttendee",{
+                  key:"setAttendeeFieldId",
+                  label: "User",
+                  onText:"user is attending",
+                  offText:"user is not attending",
+                  checked: setAttendee
+                })
               ]
             },
             // advanced group
@@ -341,6 +360,7 @@ export default class CalendarFeedSummaryWebPart extends BaseClientSideWebPart<IC
       useCORS,
       cacheDuration,
       convertFromUTC,
+      setAttendee,
       maxTotal
     } = this.properties;
 
@@ -364,14 +384,15 @@ export default class CalendarFeedSummaryWebPart extends BaseClientSideWebPart<IC
     provider.EventRange = new CalendarEventRange(this.properties.dateRange);
     provider.ConvertFromUTC = convertFromUTC;
     provider.MaxTotal = maxTotal;
+    provider.SetAttendee= setAttendee;
     return provider;
   }
 
   /**
- * Update the current theme variant reference and re-render.
- *
- * @param args The new theme
- */
+   * Update the current theme variant reference and re-render.
+   *
+   * @param args The new theme
+   */
   private _handleThemeChangedEvent(args: ThemeChangedEventArgs): void {
     this._themeVariant = args.theme;
     this.render();

@@ -48,4 +48,6 @@ export interface ICalendarFeedSummaryWebPartProps {
    * Indicates the dates received from feeds do not specify a timezone
    */
   convertFromUTC: boolean;
+
+  setAttendee:boolean;
 }

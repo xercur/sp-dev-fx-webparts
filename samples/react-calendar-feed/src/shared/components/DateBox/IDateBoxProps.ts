@@ -7,5 +7,6 @@ export interface IDateBoxProps {
     className?: string;
     size: DateBoxSize;
     themeVariant?: IReadonlyTheme;
+    banner?: string|undefined;
 }
 

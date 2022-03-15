@@ -33,7 +33,8 @@ export class RSSCalendarService extends BaseCalendarService implements ICalendar
           allDay: false,
           description: item.content,
           location: undefined, // no equivalent in RSS
-          category: item.categories && item.categories.length > 0 && item.categories[0]
+          category: item.categories && item.categories.length > 0 && item.categories[0],
+          banner:undefined
         };
         return eventItem;
       });

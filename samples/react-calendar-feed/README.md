@@ -1,5 +1,6 @@
 # Calendar Feed
 
+start with npm i
 ## Summary
 
 This web part uses event feeds from various sources and renders events using a look and feel that is consistent with the SharePoint out-of-the-box Group calendar/events web part.

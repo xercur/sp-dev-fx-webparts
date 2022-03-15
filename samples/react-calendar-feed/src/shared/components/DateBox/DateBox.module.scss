@@ -2,15 +2,16 @@
 
 .box {
   font-weight: 400;
-  border: 1px solid;
   color: $ms-color-neutralPrimary;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: column;
   flex-direction: column;
-  -ms-flex-align: center;
-  align-items: center;
+  -ms-flex-align:flex-end;
+  justify-content: flex-end;
+  align-items:center;
   text-align: center;
+
 }
 
 .box.boxIsSingleDay {

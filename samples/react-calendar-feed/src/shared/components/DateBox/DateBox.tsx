@@ -16,11 +16,11 @@ export const DateBox = (props: IDateBoxProps) => {
 
   // check if both dates are on the same day
   const isSameDay: boolean = startMoment.isSame(endMoment, "day");
+  
 
   const { themeVariant } = props;
   const backgroundColor: string = themeVariant && themeVariant.palette["primaryBackground"];
-  const textColor: string = themeVariant && backgroundColor != themeVariant.semanticColors.bodyText ?
-    themeVariant.semanticColors.bodyText : themeVariant.palette["primaryText"];
+  const textColor: string = themeVariant && backgroundColor != themeVariant.semanticColors.bodyText && props.banner==null ? themeVariant.semanticColors.bodyText : "#ffffff";
   // If the background color matches the text color, it is probably a reversed section, use a different border color
   const borderColor: string = themeVariant && backgroundColor != themeVariant.semanticColors.bodyText ? themeVariant.semanticColors.bodyDivider : "[theme:neutralLight, default: #eaeaea]";
 
@@ -33,7 +33,7 @@ export const DateBox = (props: IDateBoxProps) => {
           props.themeVariant &&
           {
             // KLUDGE: It seems like the themeVariant palette doesn't expose primaryBackground
-            backgroundColor: backgroundColor,
+            
             borderColor: borderColor,
             color: textColor
           }}>
@@ -56,7 +56,6 @@ export const DateBox = (props: IDateBoxProps) => {
         style={
           props.themeVariant &&
           {
-            backgroundColor: backgroundColor,
             borderColor: borderColor,
             color: textColor
           }}>

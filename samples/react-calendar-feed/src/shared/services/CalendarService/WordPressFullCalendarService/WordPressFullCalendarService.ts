@@ -28,7 +28,8 @@ export class WordPressFullCalendarService extends BaseCalendarService implements
             allDay: e.allDay,
             description: undefined,
             category: undefined,
-            location: undefined // none found in WordPress
+            location: undefined, // none found in WordPress
+            banner :undefined
           };
           return eventItem;
         });

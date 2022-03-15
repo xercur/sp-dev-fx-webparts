@@ -20,6 +20,7 @@ export abstract class BaseCalendarService implements ICalendarService {
   public Name: string;
   public MaxTotal: number;
   public ConvertFromUTC: boolean;
+  public SetAttendee: boolean;
 
   public getEvents: () => Promise<ICalendarEvent[]>;
   /**
@@ -138,5 +139,7 @@ export abstract class BaseCalendarService implements ICalendarService {
 
     return returnDate;
   }
+
+  
 }
 

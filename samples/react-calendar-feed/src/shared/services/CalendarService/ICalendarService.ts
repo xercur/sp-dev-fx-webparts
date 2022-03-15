@@ -11,4 +11,5 @@ export interface ICalendarService {
     ConvertFromUTC: boolean;
     Name: string;
     getEvents: () => Promise<ICalendarEvent[]>;
+    SetAttendee:boolean;
 }

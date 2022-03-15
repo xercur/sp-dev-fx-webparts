@@ -35,7 +35,8 @@ export class iCalCalendarService extends BaseCalendarService implements ICalenda
           allDay: event.startDate.icaltype === "date",
           category: event.category,
           description: event.description,
-          location: event.location
+          location: event.location,
+          banner: event.banner,
         };
 
         return eventItem;
