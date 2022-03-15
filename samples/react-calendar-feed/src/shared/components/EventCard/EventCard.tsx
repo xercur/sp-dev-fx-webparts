@@ -23,11 +23,27 @@ export const EventCard = (props: IEventCardProps) => {
     url,
     category,
     location,
-    banner
+    banner,
+    guid,
+    attendees,
+    currentuser
   } = event;
 
   const eventDate: moment.Moment = moment(start);
   const dateString: string = allDay ? eventDate.format(strings.AllDayDateFormat) : eventDate.locale('de').format(strings.LocalizedTimeFormat);
+  const adduser = ()=> fetch("https://prod-147.westeurope.logic.azure.com:443/workflows/954fa5f07a62441c900da12deaecc67c/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%252Ftriggers%252Fmanual%252Frun&sv=1.0&sig=U68vyO-_k_i2WQR7gQYdH4JMvR144w642M5yaNkI6Sc",{
+    method:'POST',
+    mode:'no-cors',
+    credentials:'include',
+    headers:{
+      'Accept':'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+       "guid":guid,
+       "currentuser":currentuser
+    })
+  });
 
   /**
    * Handle adding to calendar
@@ -89,6 +105,8 @@ export const EventCard = (props: IEventCardProps) => {
     themeVariant.semanticColors.bodyText : themeVariant.palette["primaryText"];
   const subTextColor: string = themeVariant && themeVariant.semanticColors.bodySubtext && backgroundColor != themeVariant.semanticColors.bodySubtext ? themeVariant.semanticColors.bodySubtext : textColor;
   const background: string = banner ? 'linear-gradient(360deg, rgba(51, 51, 51, 0.9), rgba(51, 51, 51, 0) 97.92%), url("'+banner+'")' : "";
+  const buttonrender: boolean = attendees!==null ?  attendees.indexOf(currentuser)=== -1:true;
+
 
   if (isNarrow) {
     // Calculate the date and string format
@@ -160,6 +178,9 @@ export const EventCard = (props: IEventCardProps) => {
               <div className={styles.detailsContainer}>
                 <div className={styles.category} style={themeVariant && { color: subTextColor }}>{category}</div>
                 <div className={styles.title} style={themeVariant && { color: textColor }}>{title}</div>
+                {buttonrender &&
+                  <ActionButton onClick={adduser}> teilnehmen </ActionButton>
+                }
                 <div className={styles.datetime} style={themeVariant && { color: subTextColor }}>{dateString}</div>
                 <div className={styles.location} style={themeVariant && { color: subTextColor }}>{location}</div>
                 <ActionButton

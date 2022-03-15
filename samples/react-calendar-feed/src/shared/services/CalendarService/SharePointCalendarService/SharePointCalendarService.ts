@@ -84,7 +84,8 @@ export class SharePointCalendarService extends BaseCalendarService
           location: item.Location,
           banner: PictureUrl,
           attendees: item.ParticipantsPickerId,
-          guid: listguid
+          guid: listguid,
+          currentuser: currentuserid,
         };
         return eventItem;
       });

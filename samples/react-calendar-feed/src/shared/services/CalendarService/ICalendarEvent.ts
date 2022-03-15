@@ -8,6 +8,7 @@ export interface ICalendarEvent {
     description: string|undefined;
     location: string|undefined;
     banner: string|undefined;
-    attendees?: []|undefined;
+    attendees?: string[]|undefined;
     guid: string;
+    currentuser: string;
 }
