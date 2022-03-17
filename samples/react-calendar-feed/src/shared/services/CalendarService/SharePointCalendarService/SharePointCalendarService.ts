@@ -47,24 +47,24 @@ export class SharePointCalendarService extends BaseCalendarService
 
     
 
-    let currentuserid = await web.currentUser.get().then((user)=>{
-      return user.Id;
+    let currentuser = await web.currentUser.get().then((user)=>{
+      return user;
     });
     let listguid = await web.getList(listUrl).get().then((list)=>{
       return list.Id;
     });
 
-    
 
    
 
     let equal:string =this.SetAttendee? "eq ": "ne ";
     // Build a filter so that we don't retrieve every single thing unless necesssary
     let dateFilter: string = "EventDate ge datetime'" + this.EventRange.Start.toISOString() + "' and EndDate lt datetime'" + this.EventRange.End.toISOString() + "'";
-    let personFilter: string =" and ParticipantsPickerId " + equal +""+ currentuserid;
+    let personFilter: string =" and ParticipantsPickerId " + equal +""+ currentuser.Id;
     try {
       const items = await web.getList(listUrl)
-        .items.select("Id,Title,Description,EventDate,EndDate,fAllDayEvent,Category,Location,ParticipantsPickerId,BannerUrl")
+        .items
+        .select("Id,Title,Description,EventDate,EndDate,fAllDayEvent,Category,Location,ParticipantsPickerId,BannerUrl")
         .orderBy('EventDate', true)
         .filter(dateFilter + personFilter)
         .get();
@@ -84,8 +84,11 @@ export class SharePointCalendarService extends BaseCalendarService
           location: item.Location,
           banner: PictureUrl,
           attendees: item.ParticipantsPickerId,
-          guid: listguid,
-          currentuser: currentuserid,
+          itemid: item.Id,
+          listguid: listguid,
+          currentuser: currentuser.Id,
+          site:siteUrl,
+          userclaims:currentuser.LoginName,
         };
         return eventItem;
       });

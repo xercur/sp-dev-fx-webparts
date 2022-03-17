@@ -9,6 +9,9 @@ export interface ICalendarEvent {
     location: string|undefined;
     banner: string|undefined;
     attendees?: string[]|undefined;
-    guid: string;
+    itemid: string;
     currentuser: string;
+    userclaims: string;
+    listguid: string;
+    site: string;
 }

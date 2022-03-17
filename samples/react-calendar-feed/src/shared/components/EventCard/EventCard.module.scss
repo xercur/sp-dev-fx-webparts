@@ -149,7 +149,6 @@
 .normalCard .title {
   font-size: 17px;
   font-weight: 300;
-  margin-bottom: 20px;
   height: 44px;
   line-height: 22px;
 }
@@ -166,14 +165,16 @@
   color: $ms-color-neutralSecondary;
 }
 
+
 .category,
 .datetime,
-.location {
+.location
+ {
   font-size: 12px;
   font-weight: 400;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   word-wrap: normal;
-  height: 18px;
+  height: 13px;
 }
