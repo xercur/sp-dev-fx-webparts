@@ -46,17 +46,19 @@ export class SharePointCalendarService extends BaseCalendarService
 
 
     
-
+      //gibt der eingeloggten user zurück
     let currentuser = await web.currentUser.get().then((user)=>{
       return user;
     });
+
+
     let listguid = await web.getList(listUrl).get().then((list)=>{
       return list.Id;
     });
 
 
    
-
+    //abhängig von der auswahl in der Konfiguration
     let equal:string =this.SetAttendee? "eq ": "ne ";
     // Build a filter so that we don't retrieve every single thing unless necesssary
     let dateFilter: string = "EventDate ge datetime'" + this.EventRange.Start.toISOString() + "' and EndDate lt datetime'" + this.EventRange.End.toISOString() + "'";
@@ -70,6 +72,7 @@ export class SharePointCalendarService extends BaseCalendarService
         .get();
 
         // Once we get the list, convert to calendar events
+        //calerndar events können angepasst werden und daten hizugefügt dafür muss man aber diese zu |CalendarEvent.ts hizufügen mit Datentyp
       let events: ICalendarEvent[] = items.map((item: any) => {
         let eventUrl: string = combine(siteUrl, `_layouts/15/Event.aspx?ListGuid=${listguid}&ItemId=${item.Id}`);
         let PictureUrl = item.BannerUrl ? item.BannerUrl.Url: null;

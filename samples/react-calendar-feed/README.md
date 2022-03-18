@@ -1,6 +1,18 @@
 # Calendar Feed
 
-
+## Anleitung von Jonas
+  - installiere [Node.js](https://nodejs.org/download/release/v10.24.0/) Version 10.24.0
+  - Terminal 
+    - `npm install`
+    - `gulp serve`
+  - alles zum bearbeiten ist in src
+    - /components/ sind die ui sachen sowie der Buttonclick
+    - unter /services/CalenderService/ sind die daten die gezogen werden
+  - Wenn fertig angepasst
+    - `gulp bundle --ship`
+    - `gulp package-solution --ship`
+  - Die neu erzeugte datei unter /sharepoint/solution/ hochladen in [SharePoint](https://kyberg365.sharepoint.com/sites/appcatalog/AppCatalog/Forms/AllItems.aspx#InplviewHashb778ec2d-3a78-4029-9b71-24431272ae72=WebPartID%3D%7BB778EC2D--3A78--4029--9B71--24431272AE72%7D)
+  - der code an sich ist inline mit comments beschrieben
 ## Summary
 
 This web part uses event feeds from various sources and renders events using a look and feel that is consistent with the SharePoint out-of-the-box Group calendar/events web part.

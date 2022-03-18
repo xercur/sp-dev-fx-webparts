@@ -43,32 +43,40 @@ export const EventCard = (props: IEventCardProps) => {
   const dateString: string = allDay
     ? eventDate.format(strings.AllDayDateFormat)
     : eventDate.locale("de").format(strings.LocalizedTimeFormat);
-  const adduser = () => {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify({
-      event: itemid,
-      user: userclaims,
-      site: site,
-      listguid: listguid
-    });
+  /**
+   * Anmelde button action 
+   * die url ist aus dem flow
+   */
+  const adduser = useCallback((): void => {
 
-    var requestOptions: RequestInit = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow"
-    };
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
 
-    fetch(
-      "https://prod-147.westeurope.logic.azure.com:443/workflows/954fa5f07a62441c900da12deaecc67c/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=U68vyO-_k_i2WQR7gQYdH4JMvR144w642M5yaNkI6Sc",
-      requestOptions
-    )
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log("error", error));
-  };
+      var raw = JSON.stringify({
+        //hier datenübergabe achtung reinfolge muss beachtet werden und im flow angepasst werden
+        event: itemid,
+        user: userclaims,
+        site: site,
+        listguid: listguid
+      });
+
+      var requestOptions: RequestInit = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+      };
+
+      fetch(
+        "https://prod-147.westeurope.logic.azure.com:443/workflows/954fa5f07a62441c900da12deaecc67c/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=U68vyO-_k_i2WQR7gQYdH4JMvR144w642M5yaNkI6Sc",
+        requestOptions
+      )
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log("error", error));
+    },[event])
+  
 
   /**
    * Handle adding to calendar
@@ -146,6 +154,7 @@ export const EventCard = (props: IEventCardProps) => {
       banner +
       '")'
     : "";
+    //button nur anzeigen wenn man selbst noch kein user ist
   const buttonrender: boolean =
     attendees !== null ? attendees.indexOf(currentuser) === -1 : true;
 
@@ -283,6 +292,7 @@ export const EventCard = (props: IEventCardProps) => {
                 >
                   {title}
                 </div>
+                
                 {buttonrender && (
                   <ActionButton
                     className={styles.addToMyCalendar}
@@ -290,11 +300,10 @@ export const EventCard = (props: IEventCardProps) => {
                     style={
                       themeVariant && {
                         color: themeVariant.palette.themeSecondary,
-                        fontWeight: 'bold'
+                        fontWeight: "bold"
                       }
                     }
                   >
-                    
                     ANMELDEN
                   </ActionButton>
                 )}
