@@ -8,6 +8,7 @@
   - alles zum bearbeiten ist in src
     - /components/ sind die ui sachen sowie der Buttonclick
     - unter /services/CalenderService/ sind die daten die gezogen werden
+    - Eigenschaften im bearbeitsmodus ist unter /webparts/CalendarFeedSummaryWebPart.ts
   - Wenn fertig angepasst
     - `gulp bundle --ship`
     - `gulp package-solution --ship`
