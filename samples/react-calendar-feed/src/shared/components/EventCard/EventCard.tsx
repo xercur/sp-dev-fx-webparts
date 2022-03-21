@@ -69,7 +69,7 @@ export const EventCard = (props: IEventCardProps) => {
       };
 
       fetch(
-        "https://prod-147.westeurope.logic.azure.com:443/workflows/954fa5f07a62441c900da12deaecc67c/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=U68vyO-_k_i2WQR7gQYdH4JMvR144w642M5yaNkI6Sc",
+        "input post endpoint of powerautomate here",
         requestOptions
       )
         .then(response => response.text())
